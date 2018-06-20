@@ -1,5 +1,6 @@
 goog.provide('acgraph.utils');
 
+goog.require('goog.string');
 goog.require('goog.userAgent');
 
 /**
@@ -87,3 +88,32 @@ acgraph.utils.instanceOf = function(object, constructor) {
   //Needs check object is defined for old IE lower 8.
   return !!object && object instanceof /** @type {Object} */(constructor);
 };
+
+
+/**
+ * Styling exceptions.
+ * @type {Object.<string, string>}
+ * @private
+ */
+acgraph.utils.STYLE_EXCEPTIONS_ = {
+  'decoration': 'text-decoration',
+  'hAlign': 'text-anchor',
+  'color': 'fill'
+};
+
+
+/**
+ * Converts style object to DOM-attribute style string.
+ * @param {Object} obj - Settings object.
+ * @return {string} - Style string.
+ */
+acgraph.utils.toStyleString = function(obj) {
+  var result = '';
+  for (var key in obj) {
+    var selCase = acgraph.utils.STYLE_EXCEPTIONS_[key] || goog.string.toSelectorCase(key);
+    result += (selCase + ': ' + obj[key] + ';');
+  }
+  return result;
+};
+
+

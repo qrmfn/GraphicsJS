@@ -168,12 +168,12 @@ acgraph.vector.svg.Renderer.prototype.measure = function(text, style) {
   //if (text == '') return new goog.math.Rect(0, 0, 0, 0);
   if (!this.measurement_) this.createMeasurement();
 
-  var spaceWidth = null;
-  var additionWidth = 0;
-
-  if (text.length == 0) {
+  if (!text.length) {
     return this.getEmptyStringBounds(style);
   }
+
+  var spaceWidth = null;
+  var additionWidth = 0;
 
   if (goog.string.isSpace(text)) {
     return this.getSpaceBounds(style);
@@ -184,37 +184,11 @@ acgraph.vector.svg.Renderer.prototype.measure = function(text, style) {
       additionWidth += spaceWidth || this.getSpaceBounds(style).width;
   }
 
-  style['fontStyle'] ?
-      this.setAttr(this.measurementText_, 'font-style', style['fontStyle']) :
-      this.removeAttr(this.measurementText_, 'font-style');
-
-  style['fontVariant'] ?
-      this.setAttr(this.measurementText_, 'font-variant', style['fontVariant']) :
-      this.removeAttr(this.measurementText_, 'font-variant');
-
-  style['fontFamily'] ?
-      this.setAttr(this.measurementText_, 'font-family', style['fontFamily']) :
-      this.removeAttr(this.measurementText_, 'font-family');
-
-  style['fontSize'] ?
-      this.setAttr(this.measurementText_, 'font-size', style['fontSize']) :
-      this.removeAttr(this.measurementText_, 'font-size');
-
-  style['fontWeight'] ?
-      this.setAttr(this.measurementText_, 'font-weight', style['fontWeight']) :
-      this.removeAttr(this.measurementText_, 'font-weight');
-
-  style['letterSpacing'] ?
-      this.setAttr(this.measurementText_, 'letter-spacing', style['letterSpacing']) :
-      this.removeAttr(this.measurementText_, 'letter-spacing');
-
-  style['decoration'] ?
-      this.setAttr(this.measurementText_, 'text-decoration', style['decoration']) :
-      this.removeAttr(this.measurementText_, 'text-decoration');
-
   this.measurementTextNode_.nodeValue = text;
+  this.measurementText_.style.cssText = acgraph.utils.toStyleString(style);
   var bbox = this.measurementText_['getBBox']();
-  this.measurementTextNode_.nodeValue = '';
+
+  // this.measurementTextNode_.nodeValue = '';
 
   if (style['fontVariant'] && goog.userAgent.OPERA) {
     this.measurementTextNode_.nodeValue = text.charAt(0).toUpperCase();
@@ -789,73 +763,6 @@ acgraph.vector.svg.Renderer.prototype.setTextProperties = function(element) {
     }
   }
 
-  //Improves font display in Opera.
-  //if (goog.userAgent.OPERA) this.setAttr(domElement, 'text-rendering', 'geometricPrecision');
-
-  //like segment style
-  if (style['fontStyle'])
-    this.setAttr(domElement, 'font-style', style['fontStyle']);
-  else
-    this.removeAttr(domElement, 'font-style');
-
-  if (style.fontVariant) {
-    if (goog.userAgent.GECKO) {
-      domElement.style['font-variant'] = style['fontVariant'];
-    } else {
-      this.setAttr(domElement, 'font-variant', style['fontVariant']);
-    }
-  } else {
-    if (goog.userAgent.GECKO) {
-      domElement.style['font-variant'] = '';
-    } else {
-      this.removeAttr(domElement, 'font-variant');
-    }
-  }
-
-  if (style['fontFamily'])
-    this.setAttr(domElement, 'font-family', style['fontFamily']);
-  else
-    this.removeAttr(domElement, 'font-family');
-
-  if (style['fontSize'])
-    this.setAttr(domElement, 'font-size', style['fontSize']);
-  else
-    this.removeAttr(domElement, 'font-size');
-
-  if (style['fontWeight'])
-    this.setAttr(domElement, 'font-weight', style['fontWeight']);
-  else
-    this.removeAttr(domElement, 'font-weight');
-
-  if (style['color'])
-    this.setAttr(domElement, 'fill', style['color']);
-  else
-    this.removeAttr(domElement, 'fill');
-
-  if (style['letterSpacing'])
-    this.setAttr(domElement, 'letter-spacing', style['letterSpacing']);
-  else
-    this.removeAttr(domElement, 'letter-spacing');
-
-  if (style['decoration']) {
-    if (goog.userAgent.GECKO) {
-      //Text-decoration does not work in Mozilla – there is a bug report about it in their bugtracker:
-      //https://bugzilla.mozilla.org/show_bug.cgi?id=317196
-      //domElement.style['text-decoration'] = style.decoration;  //does not work either.
-      this.setAttr(domElement, 'text-decoration', style['decoration']);
-
-    } else {
-      this.setAttr(domElement, 'text-decoration', style['decoration']);
-    }
-  } else
-    this.removeAttr(domElement, 'text-decoration');
-
-  //text style
-  if (style['direction'])
-    this.setAttr(domElement, 'direction', style['direction']);
-  else
-    this.removeAttr(domElement, 'direction');
-
   if (style['hAlign'] && !path) {
     var align;
 
@@ -880,14 +787,113 @@ acgraph.vector.svg.Renderer.prototype.setTextProperties = function(element) {
               acgraph.vector.Text.HAlign.START :
               'middle';
     }
-    this.setAttr(domElement, 'text-anchor', /** @type {string} */ (align));
-  } else
-    this.removeAttr(domElement, 'text-anchor');
+    style['hAlign'] = align;
+  }
 
-  if (style['opacity'])
-    domElement.style['opacity'] = style['opacity'];
-  else
-    domElement.style['opacity'] = '1';
+  // var styleString = acgraph.utils.toStyleString(style);
+
+
+  //Improves font display in Opera.
+  //if (goog.userAgent.OPERA) this.setAttr(domElement, 'text-rendering', 'geometricPrecision');
+
+  //like segment style
+  // if (style['fontStyle'])
+  //   this.setAttr(domElement, 'font-style', style['fontStyle']);
+  // else
+  //   this.removeAttr(domElement, 'font-style');
+  //
+  // if (style.fontVariant) {
+  //   if (goog.userAgent.GECKO) {
+  //     domElement.style['font-variant'] = style['fontVariant'];
+  //   } else {
+  //     this.setAttr(domElement, 'font-variant', style['fontVariant']);
+  //   }
+  // } else {
+  //   if (goog.userAgent.GECKO) {
+  //     domElement.style['font-variant'] = '';
+  //   } else {
+  //     this.removeAttr(domElement, 'font-variant');
+  //   }
+  // }
+  //
+  // if (style['fontFamily'])
+  //   this.setAttr(domElement, 'font-family', style['fontFamily']);
+  // else
+  //   this.removeAttr(domElement, 'font-family');
+  //
+  // if (style['fontSize'])
+  //   this.setAttr(domElement, 'font-size', style['fontSize']);
+  // else
+  //   this.removeAttr(domElement, 'font-size');
+  //
+  // if (style['fontWeight'])
+  //   this.setAttr(domElement, 'font-weight', style['fontWeight']);
+  // else
+  //   this.removeAttr(domElement, 'font-weight');
+  //
+  // if (style['color'])
+  //   this.setAttr(domElement, 'fill', style['color']);
+  // else
+  //   this.removeAttr(domElement, 'fill');
+  //
+  // if (style['letterSpacing'])
+  //   this.setAttr(domElement, 'letter-spacing', style['letterSpacing']);
+  // else
+  //   this.removeAttr(domElement, 'letter-spacing');
+  //
+  // if (style['decoration']) {
+  //   if (goog.userAgent.GECKO) {
+  //     //Text-decoration does not work in Mozilla – there is a bug report about it in their bugtracker:
+  //     //https://bugzilla.mozilla.org/show_bug.cgi?id=317196
+  //     //domElement.style['text-decoration'] = style.decoration;  //does not work either.
+  //     this.setAttr(domElement, 'text-decoration', style['decoration']);
+  //
+  //   } else {
+  //     this.setAttr(domElement, 'text-decoration', style['decoration']);
+  //   }
+  // } else
+  //   this.removeAttr(domElement, 'text-decoration');
+
+  //text style
+  // if (style['direction'])
+  //   this.setAttr(domElement, 'direction', style['direction']);
+  // else
+  //   this.removeAttr(domElement, 'direction');
+
+  // if (style['hAlign'] && !path) {
+  //   var align;
+  //
+  //   if (style['direction'] == 'rtl') {
+  //     if (goog.userAgent.GECKO || goog.userAgent.IE) {
+  //       align = (style['hAlign'] == acgraph.vector.Text.HAlign.END || style['hAlign'] == acgraph.vector.Text.HAlign.LEFT) ?
+  //           acgraph.vector.Text.HAlign.START :
+  //           (style['hAlign'] == acgraph.vector.Text.HAlign.START || style['hAlign'] == acgraph.vector.Text.HAlign.RIGHT) ?
+  //               acgraph.vector.Text.HAlign.END :
+  //               'middle';
+  //     } else {
+  //       align = (style['hAlign'] == acgraph.vector.Text.HAlign.END || style['hAlign'] == acgraph.vector.Text.HAlign.LEFT) ?
+  //           acgraph.vector.Text.HAlign.END :
+  //           (style['hAlign'] == acgraph.vector.Text.HAlign.START || style['hAlign'] == acgraph.vector.Text.HAlign.RIGHT) ?
+  //               acgraph.vector.Text.HAlign.START :
+  //               'middle';
+  //     }
+  //   } else {
+  //     align = (style['hAlign'] == acgraph.vector.Text.HAlign.END || style['hAlign'] == acgraph.vector.Text.HAlign.RIGHT) ?
+  //         acgraph.vector.Text.HAlign.END :
+  //         (style['hAlign'] == acgraph.vector.Text.HAlign.START || style['hAlign'] == acgraph.vector.Text.HAlign.LEFT) ?
+  //             acgraph.vector.Text.HAlign.START :
+  //             'middle';
+  //   }
+  //   this.setAttr(domElement, 'text-anchor', /** @type {string} */ (align));
+  // } else
+  //   this.removeAttr(domElement, 'text-anchor');
+
+  // if (style['opacity'])
+  //   domElement.style['opacity'] = style['opacity'];
+  // else
+  //   domElement.style['opacity'] = '1';
+
+  domElement.style.cssText = acgraph.utils.toStyleString(style);
 };
 
 
