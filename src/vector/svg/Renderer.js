@@ -131,7 +131,7 @@ acgraph.vector.svg.Renderer.prototype.createMeasurement = function() {
   goog.dom.appendChild(this.measurement_, this.measurementLayerForBBox_);
 
   //We need set 'display: block' for <svg> element to prevent scrollbar on 100% height of parent container (see DVF-620)
-  this.setAttrs(this.measurement_, {'display': 'block', 'width': 0, 'height': 0});
+  this.setAttrs(this.measurement_, {'display': 'block', 'width': 0, 'height': 0, 'position': 'absolute', 'left': -10000, 'top': -10000});
 
   this.measurementGroupNode_ = this.createLayerElement();
   goog.dom.appendChild(this.measurement_, this.measurementGroupNode_);
