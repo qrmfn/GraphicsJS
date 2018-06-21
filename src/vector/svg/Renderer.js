@@ -735,33 +735,33 @@ acgraph.vector.svg.Renderer.prototype.setTextProperties = function(element) {
   }
 
 
-  if (!element.selectable()) {
-    domElement.style['-webkit-touch-callout'] = 'none';
-    domElement.style['-webkit-user-select'] = 'none';
-    domElement.style['-khtml-user-select'] = 'none';
-    domElement.style['-moz-user-select'] = 'moz-none';
-    domElement.style['-ms-user-select'] = 'none';
-    domElement.style['-o-user-select'] = 'none';
-    domElement.style['user-select'] = 'none';
-
-    if ((goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE == 9) || goog.userAgent.OPERA) {
-      this.setAttr(domElement, 'unselectable', 'on');
-      this.setAttr(domElement, 'onselectstart', 'return false;');
-    }
-  } else {
-    domElement.style['-webkit-touch-callout'] = '';
-    domElement.style['-webkit-user-select'] = '';
-    domElement.style['-khtml-user-select'] = '';
-    domElement.style['-moz-user-select'] = '';
-    domElement.style['-ms-user-select'] = '';
-    domElement.style['-o-user-select'] = '';
-    domElement.style['user-select'] = '';
-
-    if ((goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE == 9) || goog.userAgent.OPERA) {
-      this.removeAttr(domElement, 'unselectable');
-      this.removeAttr(domElement, 'onselectstart');
-    }
-  }
+  // if (!element.selectable()) {
+  //   domElement.style['-webkit-touch-callout'] = 'none';
+  //   domElement.style['-webkit-user-select'] = 'none';
+  //   domElement.style['-khtml-user-select'] = 'none';
+  //   domElement.style['-moz-user-select'] = 'moz-none';
+  //   domElement.style['-ms-user-select'] = 'none';
+  //   domElement.style['-o-user-select'] = 'none';
+  //   domElement.style['user-select'] = 'none';
+  //
+  //   if ((goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE == 9) || goog.userAgent.OPERA) {
+  //     this.setAttr(domElement, 'unselectable', 'on');
+  //     this.setAttr(domElement, 'onselectstart', 'return false;');
+  //   }
+  // } else {
+  //   domElement.style['-webkit-touch-callout'] = '';
+  //   domElement.style['-webkit-user-select'] = '';
+  //   domElement.style['-khtml-user-select'] = '';
+  //   domElement.style['-moz-user-select'] = '';
+  //   domElement.style['-ms-user-select'] = '';
+  //   domElement.style['-o-user-select'] = '';
+  //   domElement.style['user-select'] = '';
+  //
+  //   if ((goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE == 9) || goog.userAgent.OPERA) {
+  //     this.removeAttr(domElement, 'unselectable');
+  //     this.removeAttr(domElement, 'onselectstart');
+  //   }
+  // }
 
   if (style['hAlign'] && !path) {
     var align;
@@ -790,8 +790,35 @@ acgraph.vector.svg.Renderer.prototype.setTextProperties = function(element) {
     style['hAlign'] = align;
   }
 
-  // var styleString = acgraph.utils.toStyleString(style);
+  domElement.style.cssText = acgraph.utils.toStyleString(style);
 
+  if (element.selectable()) {
+    domElement.style['-webkit-touch-callout'] = '';
+    domElement.style['-webkit-user-select'] = '';
+    domElement.style['-khtml-user-select'] = '';
+    domElement.style['-moz-user-select'] = '';
+    domElement.style['-ms-user-select'] = '';
+    domElement.style['-o-user-select'] = '';
+    domElement.style['user-select'] = '';
+
+    if ((goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE == 9) || goog.userAgent.OPERA) {
+      this.removeAttr(domElement, 'unselectable');
+      this.removeAttr(domElement, 'onselectstart');
+    }
+  } else {
+    domElement.style['-webkit-touch-callout'] = 'none';
+    domElement.style['-webkit-user-select'] = 'none';
+    domElement.style['-khtml-user-select'] = 'none';
+    domElement.style['-moz-user-select'] = 'moz-none';
+    domElement.style['-ms-user-select'] = 'none';
+    domElement.style['-o-user-select'] = 'none';
+    domElement.style['user-select'] = 'none';
+
+    if ((goog.userAgent.IE && goog.userAgent.DOCUMENT_MODE == 9) || goog.userAgent.OPERA) {
+      this.setAttr(domElement, 'unselectable', 'on');
+      this.setAttr(domElement, 'onselectstart', 'return false;');
+    }
+  }
 
   //Improves font display in Opera.
   //if (goog.userAgent.OPERA) this.setAttr(domElement, 'text-rendering', 'geometricPrecision');
@@ -893,7 +920,6 @@ acgraph.vector.svg.Renderer.prototype.setTextProperties = function(element) {
   // else
   //   domElement.style['opacity'] = '1';
 
-  domElement.style.cssText = acgraph.utils.toStyleString(style);
 };
 
 
