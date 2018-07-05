@@ -225,8 +225,6 @@ acgraph.vector.svg.Renderer.prototype.measure = function(text, style) {
   //   bbox.height = this.measurementText_['getBBox']().height;
   // }
 
-  debugger;
-
   return new goog.math.Rect(bbox.x, bbox.y, bbox.width + additionWidth, bbox.height);
 };
 
