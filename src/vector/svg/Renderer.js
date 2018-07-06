@@ -125,7 +125,6 @@ acgraph.vector.svg.Renderer.prototype.createMeasurement = function() {
   goog.dom.appendChild(this.measurementText_, this.measurementTextNode_);
   goog.dom.appendChild(this.measurement_, this.measurementText_);
   goog.dom.appendChild(this.measurement_, this.mesurmentDef_);
-  goog.dom.appendChild(goog.global['document'].body, this.measurement_);
 
   this.measurementLayerForBBox_ = this.createLayerElement();
   goog.dom.appendChild(this.measurement_, this.measurementLayerForBBox_);
@@ -136,6 +135,8 @@ acgraph.vector.svg.Renderer.prototype.createMeasurement = function() {
   this.measurement_.style.cssText = 'position: absolute; left: -99999; top: -99999';
   this.measurementGroupNode_ = this.createLayerElement();
   goog.dom.appendChild(this.measurement_, this.measurementGroupNode_);
+
+  goog.dom.appendChild(goog.global['document'].body, this.measurement_);
 };
 
 
