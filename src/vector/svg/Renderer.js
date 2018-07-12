@@ -168,23 +168,23 @@ acgraph.vector.svg.Renderer.prototype.disposeMeasurement = function() {
  */
 acgraph.vector.svg.Renderer.prototype.measure = function(text, style) {
   // return new goog.math.Rect(0, 0, 0, 0);
-    if (!this.measurement_) this.createMeasurement();
+  if (!this.measurement_) this.createMeasurement();
 
-  // var spaceWidth = null;
+  var spaceWidth = null;
   var additionWidth = 0;
 
-  // if (text.length == 0) {
-  //   return this.getEmptyStringBounds(style);
-  // }
-  //
-  // if (goog.string.isSpace(text)) {
-  //   return this.getSpaceBounds(style);
-  // } else {
-  //   if (goog.string.startsWith(text, ' '))
-  //     additionWidth += spaceWidth = this.getSpaceBounds(style).width;
-  //   if (goog.string.endsWith(text, ' '))
-  //     additionWidth += spaceWidth || this.getSpaceBounds(style).width;
-  // }
+  if (text.length == 0) {
+    return this.getEmptyStringBounds(style);
+  }
+
+  if (goog.string.isSpace(text)) {
+    return this.getSpaceBounds(style);
+  } else {
+    if (goog.string.startsWith(text, ' '))
+      additionWidth += spaceWidth = this.getSpaceBounds(style).width;
+    if (goog.string.endsWith(text, ' '))
+      additionWidth += spaceWidth || this.getSpaceBounds(style).width;
+  }
 
   var cssString = '';
   if (style['fontStyle']) {
@@ -221,10 +221,10 @@ acgraph.vector.svg.Renderer.prototype.measure = function(text, style) {
   var bbox = this.measurementText_['getBBox']();
   // this.measurementTextNode_.nodeValue = '';
 
-  // if (style['fontVariant'] && goog.userAgent.OPERA) {
-  //   this.measurementTextNode_.nodeValue = text.charAt(0).toUpperCase();
-  //   bbox.height = this.measurementText_['getBBox']().height;
-  // }
+  if (style['fontVariant'] && goog.userAgent.OPERA) {
+    this.measurementTextNode_.nodeValue = text.charAt(0).toUpperCase();
+    bbox.height = this.measurementText_['getBBox']().height;
+  }
 
   return new goog.math.Rect(bbox.x, bbox.y, bbox.width + additionWidth, bbox.height);
 };
