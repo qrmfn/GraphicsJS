@@ -1695,30 +1695,31 @@ acgraph.vector.Text.prototype.textDefragmentation = function() {
       if (!this.domElement()) {
         this.createDom(true);
       }
-      // if (this.hasDirtyState(acgraph.vector.Element.DirtyState.STYLE))
-      //   this.renderStyle();
+
+      if (this.hasDirtyState(acgraph.vector.Element.DirtyState.STYLE))
+        this.renderStyle();
 
       segment = new acgraph.vector.TextSegment(this.text_, {});
       this.currentLine_.push(segment);
       this.segments_.push(segment);
       segment.parent(this);
 
-      // if (this.hasDirtyState(acgraph.vector.Element.DirtyState.DATA))
-      //   this.renderData();
+      if (this.hasDirtyState(acgraph.vector.Element.DirtyState.DATA))
+        this.renderData();
 
-      // var bounds = acgraph.getRenderer().getBBox(this.domElement(), this.text_, this.style_);
+      var bounds = acgraph.getRenderer().getBBox(this.domElement(), this.text_, this.style_);
 
-      // segment.baseLine = -bounds.top;
-      // segment.height = bounds.height;
-      // segment.width = bounds.width;
+      segment.baseLine = -bounds.top;
+      segment.height = bounds.height;
+      segment.width = bounds.width;
 
       // calculate line params with newly added segment.
-      // this.currentLineHeight_ = bounds.height;
-      // this.currentLineWidth_ = bounds.width + this.textIndent_;
-      // this.currentBaseLine_ = segment.baseLine;
-      // this.currentLineEmpty_ = this.text_.length == 0;
+      this.currentLineHeight_ = bounds.height;
+      this.currentLineWidth_ = bounds.width + this.textIndent_;
+      this.currentBaseLine_ = segment.baseLine;
+      this.currentLineEmpty_ = this.text_.length == 0;
 
-      // this.finalizeTextLine();
+      this.finalizeTextLine();
       this.currentNumberSeqBreaks_++;
       var height = this.currentLine_[0] ? this.currentLine_[0].height : 0;
       this.accumulatedHeight_ += goog.isString(this.lineHeight_) ?

@@ -117,26 +117,30 @@ acgraph.vector.svg.Renderer.prototype.createSVGElement_ = function(tag) {
  * Desc.
  */
 acgraph.vector.svg.Renderer.prototype.createMeasurement = function() {
-  this.measurement_ = this.createSVGElement_('svg');
-  this.measurementText_ = this.createTextElement();
-  this.measurementTextNode_ = this.createTextNode('');
-  this.mesurmentDef_ = this.createDefsElement();
+  if (!this.measurement_) {
+    this.measurement_ = this.createSVGElement_('svg');
+    this.measurementText_ = this.createTextElement();
+    this.measurementTextNode_ = this.createTextNode('');
+    this.mesurmentDef_ = this.createDefsElement();
 
-  goog.dom.appendChild(this.measurementText_, this.measurementTextNode_);
-  goog.dom.appendChild(this.measurement_, this.measurementText_);
-  goog.dom.appendChild(this.measurement_, this.mesurmentDef_);
+    goog.dom.appendChild(this.measurementText_, this.measurementTextNode_);
+    goog.dom.appendChild(this.measurement_, this.measurementText_);
+    goog.dom.appendChild(this.measurement_, this.mesurmentDef_);
 
-  this.measurementLayerForBBox_ = this.createLayerElement();
-  goog.dom.appendChild(this.measurement_, this.measurementLayerForBBox_);
+    this.measurementLayerForBBox_ = this.createLayerElement();
+    goog.dom.appendChild(this.measurement_, this.measurementLayerForBBox_);
 
-  //We need set 'display: block' for <svg> element to prevent scrollbar on 100% height of parent container (see DVF-620)
-  this.setAttrs(this.measurement_, {'width': 0, 'height': 0});
+    //We need set 'display: block' for <svg> element to prevent scrollbar on 100% height of parent container (see DVF-620)
+    this.setAttrs(this.measurement_, {'width': 0, 'height': 0});
 
-  this.measurement_.style.cssText = 'position: absolute; left: -99999; top: -99999';
-  this.measurementGroupNode_ = this.createLayerElement();
-  goog.dom.appendChild(this.measurement_, this.measurementGroupNode_);
+    this.measurement_.style.cssText = 'position: absolute; left: -99999; top: -99999';
+    this.measurementGroupNode_ = this.createLayerElement();
+    goog.dom.appendChild(this.measurement_, this.measurementGroupNode_);
 
-  goog.dom.appendChild(goog.global['document'].body, this.measurement_);
+    goog.dom.appendChild(goog.global['document'].body, this.measurement_);
+  }
+
+  return this.measurement_;
 };
 
 
