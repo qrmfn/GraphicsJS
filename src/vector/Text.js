@@ -499,6 +499,7 @@ acgraph.vector.Text.prototype.setStyleProperty = function(prop, opt_value) {
       // if (!stageSuspended) this.getStage().suspend();
       this.style_[prop] = opt_value;
       // this.defragmented = false;
+      // console.log('setStyleProperty');
       //
       //
       //
@@ -811,6 +812,7 @@ acgraph.vector.Text.prototype.path = function(opt_value) {
     var stageSuspended = !this.getStage() || this.getStage().isSuspended();
     if (!stageSuspended) this.getStage().suspend();
     // this.defragmented = false;
+    console.log('path');
     // this.setDirtyState(
     //     acgraph.vector.Element.DirtyState.STYLE |
     //     acgraph.vector.Element.DirtyState.DATA |
@@ -897,6 +899,7 @@ acgraph.vector.Text.prototype.style = function(opt_value) {
     var stageSuspended = !this.getStage() || this.getStage().isSuspended();
     if (!stageSuspended) this.getStage().suspend();
     // this.defragmented = false;
+    console.log('style');
     // this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
     // this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
     // this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
@@ -922,6 +925,7 @@ acgraph.vector.Text.prototype.text = function(opt_value) {
       var stageSuspended = !this.getStage() || this.getStage().isSuspended();
       if (!stageSuspended) this.getStage().suspend();
       // this.defragmented = false;
+      // console.log('text', this.text_);
       // this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
       // this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
       // this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
@@ -947,6 +951,7 @@ acgraph.vector.Text.prototype.htmlText = function(opt_value) {
       var stageSuspended = !this.getStage() || this.getStage().isSuspended();
       if (!stageSuspended) this.getStage().suspend();
       // this.defragmented = false;
+      // console.log('htmlText');
       // this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
       // this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
       // this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
@@ -1690,43 +1695,43 @@ acgraph.vector.Text.prototype.textDefragmentation = function() {
     this.text_ = goog.string.canonicalizeNewlines(goog.string.normalizeSpaces(this.text_));
     var textArr = this.text_.split(q);
 
-    if (textArr.length == 1 && !goog.isDefAndNotNull(this.style_['width']) && !this.path()) {
-      if (!this.domElement()) {
-        this.createDom(true);
-      }
-
-      if (this.hasDirtyState(acgraph.vector.Element.DirtyState.STYLE))
-        this.renderStyle();
-
-      if (this.hasDirtyState(acgraph.vector.Element.DirtyState.DATA)) {
-        segment = new acgraph.vector.TextSegment(this.text_, {});
-        this.currentLine_.push(segment);
-        this.segments_.push(segment);
-        segment.parent(this);
-
-        this.renderData();
-      }
-
-      var bounds = acgraph.getRenderer().getBBox(this.domElement(), this.text_, this.style_);
-
-      segment.baseLine = -bounds.top;
-      segment.height = bounds.height;
-      segment.width = bounds.width;
-
-      // calculate line params with newly added segment.
-      this.currentLineHeight_ = bounds.height;
-      this.currentLineWidth_ = bounds.width + this.textIndent_;
-      this.currentBaseLine_ = segment.baseLine;
-      this.currentLineEmpty_ = this.text_.length == 0;
-
-      this.finalizeTextLine();
-      this.currentNumberSeqBreaks_++;
-      var height = this.currentLine_[0] ? this.currentLine_[0].height : 0;
-      this.accumulatedHeight_ += goog.isString(this.lineHeight_) ?
-          parseInt(this.lineHeight_, 0) + height :
-          this.lineHeight_ * height;
-    } else {
-      // console.log('!!!');
+    // if (textArr.length == 1 && !goog.isDefAndNotNull(this.style_['width']) && !this.path()) {
+    //   if (!this.domElement()) {
+    //     this.createDom(true);
+    //   }
+    //
+    //   if (this.hasDirtyState(acgraph.vector.Element.DirtyState.STYLE))
+    //     this.renderStyle();
+    //
+    //   if (this.hasDirtyState(acgraph.vector.Element.DirtyState.DATA)) {
+    //     segment = new acgraph.vector.TextSegment(this.text_, {});
+    //     this.currentLine_.push(segment);
+    //     this.segments_.push(segment);
+    //     segment.parent(this);
+    //
+    //     this.renderData();
+    //   }
+    //
+    //   var bounds = acgraph.getRenderer().getBBox(this.domElement(), this.text_, this.style_);
+    //
+    //   segment.baseLine = -bounds.top;
+    //   segment.height = bounds.height;
+    //   segment.width = bounds.width;
+    //
+    //   // calculate line params with newly added segment.
+    //   this.currentLineHeight_ = bounds.height;
+    //   this.currentLineWidth_ = bounds.width + this.textIndent_;
+    //   this.currentBaseLine_ = segment.baseLine;
+    //   this.currentLineEmpty_ = this.text_.length == 0;
+    //
+    //   this.finalizeTextLine();
+    //   this.currentNumberSeqBreaks_++;
+    //   var height = this.currentLine_[0] ? this.currentLine_[0].height : 0;
+    //   this.accumulatedHeight_ += goog.isString(this.lineHeight_) ?
+    //       parseInt(this.lineHeight_, 0) + height :
+    //       this.lineHeight_ * height;
+    // } else {
+    //   console.log('!!!');
       for (i = 0; i < textArr.length; i++) {
         text = goog.string.trimLeft(textArr[i]);
         if (goog.isDefAndNotNull(text)) {
@@ -1738,7 +1743,7 @@ acgraph.vector.Text.prototype.textDefragmentation = function() {
           }
         }
       }
-    }
+    // }
   }
 
   if (this.textIndent_ && this.textLines_.length > 0) {
