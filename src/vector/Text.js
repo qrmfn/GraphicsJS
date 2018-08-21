@@ -495,16 +495,15 @@ acgraph.vector.Text.prototype.y = function(opt_value) {
 acgraph.vector.Text.prototype.setStyleProperty = function(prop, opt_value) {
   if (goog.isDef(opt_value)) {
     if (opt_value !== this.style_[prop]) {
-      // var stageSuspended = !this.getStage() || this.getStage().isSuspended();
-      // if (!stageSuspended) this.getStage().suspend();
+      var stageSuspended = !this.getStage() || this.getStage().isSuspended();
+      if (!stageSuspended) this.getStage().suspend();
       this.style_[prop] = opt_value;
-      // this.defragmented = false;
-      // console.log('setStyleProperty');
-      //
-      //
-      //
-      // this.transformAfterChange();
-      // if (!stageSuspended) this.getStage().resume();
+      this.defragmented = false;
+      this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
+      this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
+      this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
+      this.transformAfterChange();
+      if (!stageSuspended) this.getStage().resume();
     }
     return this;
   }
@@ -572,7 +571,7 @@ acgraph.vector.Text.prototype.height = function(opt_value) {
 acgraph.vector.Text.prototype.opacity = function(opt_value) {
   if (goog.isDefAndNotNull(opt_value)) {
     this.style_['opacity'] = opt_value;
-    // this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
+    this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
     return this;
   }
   return this.style_['opacity'];
@@ -587,7 +586,7 @@ acgraph.vector.Text.prototype.opacity = function(opt_value) {
 acgraph.vector.Text.prototype.color = function(opt_value) {
   if (goog.isDefAndNotNull(opt_value)) {
     this.style_['color'] = opt_value;
-    // this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
+    this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
     return this;
   }
   return this.style_['color'];
@@ -811,13 +810,12 @@ acgraph.vector.Text.prototype.path = function(opt_value) {
 
     var stageSuspended = !this.getStage() || this.getStage().isSuspended();
     if (!stageSuspended) this.getStage().suspend();
-    // this.defragmented = false;
-    console.log('path');
-    // this.setDirtyState(
-    //     acgraph.vector.Element.DirtyState.STYLE |
-    //     acgraph.vector.Element.DirtyState.DATA |
-    //     acgraph.vector.Element.DirtyState.POSITION |
-    //     acgraph.vector.Element.DirtyState.CHILDREN);
+    this.defragmented = false;
+    this.setDirtyState(
+        acgraph.vector.Element.DirtyState.STYLE |
+        acgraph.vector.Element.DirtyState.DATA |
+        acgraph.vector.Element.DirtyState.POSITION |
+        acgraph.vector.Element.DirtyState.CHILDREN);
     this.transformAfterChange();
     if (!stageSuspended) this.getStage().resume();
 
@@ -898,12 +896,11 @@ acgraph.vector.Text.prototype.style = function(opt_value) {
 
     var stageSuspended = !this.getStage() || this.getStage().isSuspended();
     if (!stageSuspended) this.getStage().suspend();
-    // this.defragmented = false;
-    console.log('style');
-    // this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
-    // this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
-    // this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
-    // this.setDirtyState(acgraph.vector.Element.DirtyState.TRANSFORMATION);
+    this.defragmented = false;
+    this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
+    this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
+    this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
+    this.setDirtyState(acgraph.vector.Element.DirtyState.TRANSFORMATION);
     this.transformAfterChange();
     if (!stageSuspended) this.getStage().resume();
     return this;
@@ -924,11 +921,10 @@ acgraph.vector.Text.prototype.text = function(opt_value) {
       this.htmlOn_ = false;
       var stageSuspended = !this.getStage() || this.getStage().isSuspended();
       if (!stageSuspended) this.getStage().suspend();
-      // this.defragmented = false;
-      // console.log('text', this.text_);
-      // this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
-      // this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
-      // this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
+      this.defragmented = false;
+      this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
+      this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
+      this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
       this.transformAfterChange();
       if (!stageSuspended) this.getStage().resume();
     }
@@ -950,11 +946,10 @@ acgraph.vector.Text.prototype.htmlText = function(opt_value) {
       this.htmlOn_ = true;
       var stageSuspended = !this.getStage() || this.getStage().isSuspended();
       if (!stageSuspended) this.getStage().suspend();
-      // this.defragmented = false;
-      // console.log('htmlText');
-      // this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
-      // this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
-      // this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
+      this.defragmented = false;
+      this.setDirtyState(acgraph.vector.Element.DirtyState.STYLE);
+      this.setDirtyState(acgraph.vector.Element.DirtyState.DATA);
+      this.setDirtyState(acgraph.vector.Element.DirtyState.POSITION);
       this.transformAfterChange();
       if (!stageSuspended) this.getStage().resume();
     }
@@ -1731,7 +1726,6 @@ acgraph.vector.Text.prototype.textDefragmentation = function() {
     //       parseInt(this.lineHeight_, 0) + height :
     //       this.lineHeight_ * height;
     // } else {
-    //   console.log('!!!');
       for (i = 0; i < textArr.length; i++) {
         text = goog.string.trimLeft(textArr[i]);
         if (goog.isDefAndNotNull(text)) {
