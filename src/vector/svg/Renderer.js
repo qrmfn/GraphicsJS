@@ -115,6 +115,7 @@ acgraph.vector.svg.Renderer.prototype.createSVGElement_ = function(tag) {
 //----------------------------------------------------------------------------------------------------------------------
 /**
  * Desc.
+ * @return {!Element} Measurement SVG container.
  */
 acgraph.vector.svg.Renderer.prototype.createMeasurement = function() {
   if (!this.measurement_) {
